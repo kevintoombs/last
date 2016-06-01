@@ -12,7 +12,7 @@ function drawBuildings() {
 }
 function setupBuildings() {
     for (var i = 0; i < defBuildings.length; i++) {
-        var build = new Building(defBuildings[i]);
+        var build = new Building(defBuildings[i].id, 0);
         game.buildings.push(build);
     }
 }
@@ -27,7 +27,7 @@ var LastData = (function () {
     return LastData;
 }());
 var Building = (function () {
-    function Building(input) {
+    function Building(id, count) {
         var _this = this;
         this.id = undefined;
         this.name = undefined;
@@ -57,6 +57,19 @@ var Building = (function () {
             }
             game.render();
         };
+        this.id = id;
+        this.name = defBuildings[id - 1].name;
+        this.count = count;
+        this.cost = defBuildings[id - 1].cost * this.costGrowth ^ count;
+        this.production = defBuildings[id - 1].production;
+        var dom = document.getElementById('buildings-menu');
+        this.button = document.createElement('BUTTON');
+        this.button.textContent = this.name + "-" + this.count + "-" + this.cost;
+        this.button.onclick = this.buy;
+        dom.appendChild(this.button);
+        console.log('Building made and appended');
+    }
+    Building.prototype.constructor_old = function (input) {
         this.id = input.id;
         this.name = input.name;
         this.cost = input.cost;
@@ -67,7 +80,7 @@ var Building = (function () {
         this.button.onclick = this.buy;
         dom.appendChild(this.button);
         console.log('Building made and appended');
-    }
+    };
     Building.prototype.produce = function () {
         return this.production * this.count;
     };

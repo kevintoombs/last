@@ -14,7 +14,7 @@ function drawBuildings() {
 
 function setupBuildings() {
     for (let i = 0; i<defBuildings.length; i++){
-          let build = new Building(defBuildings[i]);
+          let build = new Building(defBuildings[i].id, 0);
           game.buildings.push(build)
     }
 }
@@ -43,7 +43,22 @@ class Building {
     count: number = 0;
     costGrowth: number = 1.1;
     
-    constructor(input: any) {
+    constructor(id: number, count: number) {
+        this.id = id;
+        this.name = defBuildings[id-1].name;
+        this.count = count;
+        this.cost = defBuildings[id-1].cost * this.costGrowth ^ count;
+        this.production = defBuildings[id-1].production;
+        
+        let dom = document.getElementById('buildings-menu');
+        this.button = <HTMLButtonElement>document.createElement('BUTTON');
+        this.button.textContent =  this.name + "-" + this.count + "-" + this.cost;
+        this.button.onclick = this.buy;                            
+
+        dom.appendChild(this.button);
+        console.log('Building made and appended');
+    }
+    constructor_old(input: any) {
         this.id = input.id;
         this.name = input.name;
         this.cost = input.cost;
