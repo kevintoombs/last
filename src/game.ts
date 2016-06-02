@@ -9,7 +9,6 @@ class Game {
     constructor() {
         this.interval = 1000;
         this.decimals = 0;
-        this.load();
         this.initHTML();
     };
 
@@ -19,7 +18,7 @@ class Game {
     }
 
     generate = () => {
-        this.currency += 1;
+        this.currency += 100;
         console.log(this.currency);
         this.render();
     }
@@ -32,15 +31,26 @@ class Game {
             console.log("Data found, loading");
             this.lastData = JSON.parse(localStorage.getItem('lastData'));
             this.currency = this.lastData.currency;
+            this.clearBuildings();
+            console.log(this);
+            for (var build of this.lastData.build){
+                addBuilding(build);
+            }
         }
+    }
+    
+    clearBuildings (){
+        this.buildings = [];
+        document.getElementById('buildings-menu').innerHTML = "buildings:";
     }
 
     save = () => {
         this.lastData.currency = this.currency;
-        /*for (var building of this.buildings){
+        this.lastData.build = [];
+        for (var building of this.buildings){
             var build = {id:building.id, count:building.count};
             this.lastData.build.push(build);
-        }*/
+        }
         localStorage.setItem('lastData', JSON.stringify(this.lastData));
         console.log('Game data saved');
     }
@@ -58,9 +68,11 @@ class Game {
     }
 
     production() {
+        var start = this.currency;
         for (let i = 0; i < this.buildings.length; i++){
             this.currency += this.buildings[i].produce();
         }
+        console.log('made ' + (this.currency-start));
     }
 
     render() {

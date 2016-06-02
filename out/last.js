@@ -16,10 +16,13 @@ function setupBuildings() {
         game.buildings.push(build);
     }
 }
-function addBuilding() {
+function addBuilding(build) {
+    var building = new Building(build.id, build.count);
+    game.buildings.push(building);
 }
 var LastData = (function () {
     function LastData() {
+        this.build = [];
         this.currency = 0;
         console.log('Game data constructed');
     }
@@ -60,7 +63,7 @@ var Building = (function () {
         this.id = id;
         this.name = defBuildings[id - 1].name;
         this.count = count;
-        this.cost = defBuildings[id - 1].cost * this.costGrowth ^ count;
+        this.cost = defBuildings[id - 1].cost * (Math.pow(this.costGrowth, this.count));
         this.production = defBuildings[id - 1].production;
         var dom = document.getElementById('buildings-menu');
         this.button = document.createElement('BUTTON');
@@ -103,8 +106,14 @@ var defBuildings = [
 var game;
 document.addEventListener('DOMContentLoaded', function () {
     game = new Game();
+    game.load();
+    game.initHTML();
     game.render();
     window.setInterval(game.tick, game.interval);
     //drawBuildings();
-    setupBuildings();
+    console.log('Buildings Length: ' + game.buildings.length);
+    if (game.buildings.length < 1) {
+        setupBuildings();
+    }
+    ;
 });
