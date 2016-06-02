@@ -35,21 +35,21 @@ class LastData {
 
 class Building {
     id: number = undefined;
+    count: number = 0;
+    
     name: string = undefined;
     cost: number = undefined;
     production: number = undefined;
-
+    costGrowth: number = undefined;
+    
     button: HTMLButtonElement = undefined;
-
-    count: number = 0;
-    costGrowth: number = 1.1;
 
     constructor(id: number, count: number) {
         this.id = id;
-        this.name = defBuildings[id - 1].name;
         this.count = count;
+        this.name = defBuildings[id - 1].name;
+        this.costGrowth = defBuildings[id-1].costGrowth;
         this.cost = defBuildings[id - 1].cost * (this.costGrowth ** this.count);
-
         this.production = defBuildings[id - 1].production;
 
         let dom = document.getElementById('buildings-menu');
@@ -107,12 +107,14 @@ var defBuildings = [
         id: 1,
         name: "A",
         cost: 10,
+        costGrowth: 1.1,
         production: 1
     },
     {
         id: 2,
         name: "B",
         cost: 20,
+        costGrowth: 1.1,
         production: 2
     }
 ];

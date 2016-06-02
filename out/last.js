@@ -33,12 +33,12 @@ var Building = (function () {
     function Building(id, count) {
         var _this = this;
         this.id = undefined;
+        this.count = 0;
         this.name = undefined;
         this.cost = undefined;
         this.production = undefined;
+        this.costGrowth = undefined;
         this.button = undefined;
-        this.count = 0;
-        this.costGrowth = 1.1;
         this.check = function () {
             if (_this.cost > game.currency) {
                 _this.button.disabled = true;
@@ -61,8 +61,9 @@ var Building = (function () {
             game.render();
         };
         this.id = id;
-        this.name = defBuildings[id - 1].name;
         this.count = count;
+        this.name = defBuildings[id - 1].name;
+        this.costGrowth = defBuildings[id - 1].costGrowth;
         this.cost = defBuildings[id - 1].cost * (Math.pow(this.costGrowth, this.count));
         this.production = defBuildings[id - 1].production;
         var dom = document.getElementById('buildings-menu');
@@ -94,12 +95,14 @@ var defBuildings = [
         id: 1,
         name: "A",
         cost: 10,
+        costGrowth: 1.1,
         production: 1
     },
     {
         id: 2,
         name: "B",
         cost: 20,
+        costGrowth: 1.1,
         production: 2
     }
 ];
